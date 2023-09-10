@@ -10,4 +10,11 @@ CREATE TABLE endereco
 ALTER TABLE endereco
     ADD CONSTRAINT pk_endereco PRIMARY KEY (end_id);
 
+CREATE SEQUENCE endereco_seq
+    START 1
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
 CREATE INDEX idx_end_id ON endereco (end_id);
