@@ -52,7 +52,7 @@ public class Pessoa implements Serializable {
     @Column(name = "pes_pai", nullable = false)
     private String nomePai;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "pessoa_endereco",
             joinColumns = @JoinColumn(name = "pes_id"),
