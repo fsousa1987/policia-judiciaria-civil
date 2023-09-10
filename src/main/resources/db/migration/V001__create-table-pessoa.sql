@@ -11,4 +11,11 @@ CREATE TABLE pessoa
 ALTER TABLE pessoa
     ADD CONSTRAINT pk_pessoa PRIMARY kEY (pes_id);
 
+CREATE SEQUENCE pessoa_seq
+    START 1
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
 CREATE INDEX idx_pes_id ON pessoa (pes_id);
