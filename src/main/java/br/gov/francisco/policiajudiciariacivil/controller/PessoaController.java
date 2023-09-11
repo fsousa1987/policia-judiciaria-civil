@@ -22,7 +22,7 @@ public class PessoaController {
     public ResponseEntity<List<PessoaResponse>> findAll() {
         List<PessoaResponse> pessoas = pessoaService.findAll();
 
-        return ResponseEntity.ok(pessoas);
+        return ResponseEntity.ok().body(pessoas);
     }
 
 }
