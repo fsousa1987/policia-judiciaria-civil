@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -43,5 +45,8 @@ public class Endereco implements Serializable {
 
     @Column(name = "end_bairro", nullable = false, length = 100)
     private String bairro;
+
+    @ManyToMany(mappedBy = "enderecos")
+    private Set<Pessoa> pessoas = new HashSet<>();
 
 }
