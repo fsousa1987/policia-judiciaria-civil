@@ -1,6 +1,6 @@
-package br.gov.francisco.policiajudiciariacivil.entity;
+package br.gov.francisco.policiajudiciariacivil.domain.entity;
 
-import br.gov.francisco.policiajudiciariacivil.enums.Sexo;
+import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "pessoa")
 @Entity
-public class Pessoa implements Serializable {
+public class PessoaEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -62,6 +62,6 @@ public class Pessoa implements Serializable {
             joinColumns = @JoinColumn(name = "pes_id"),
             inverseJoinColumns = @JoinColumn(name = "end_id")
     )
-    private Set<Endereco> enderecos = new HashSet<>();
+    private Set<EnderecoEntity> enderecos = new HashSet<>();
 
 }

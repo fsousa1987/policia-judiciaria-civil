@@ -1,4 +1,4 @@
-package br.gov.francisco.policiajudiciariacivil.entity;
+package br.gov.francisco.policiajudiciariacivil.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,14 +8,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter
+@Setter
 @Table(name = "endereco")
 @Entity
-public class Endereco implements Serializable {
+public class EnderecoEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -47,6 +48,6 @@ public class Endereco implements Serializable {
     private String bairro;
 
     @ManyToMany(mappedBy = "enderecos")
-    private Set<Pessoa> pessoas = new HashSet<>();
+    private Set<PessoaEntity> pessoas = new HashSet<>();
 
 }
