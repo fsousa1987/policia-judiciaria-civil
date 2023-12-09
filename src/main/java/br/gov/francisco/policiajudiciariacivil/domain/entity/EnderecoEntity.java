@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -48,6 +48,6 @@ public class EnderecoEntity implements Serializable {
     private String bairro;
 
     @ManyToMany(mappedBy = "enderecos")
-    private Set<PessoaEntity> pessoas = new HashSet<>();
+    private List<PessoaEntity> pessoas = new ArrayList<>();
 
 }

@@ -9,8 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -62,6 +62,6 @@ public class PessoaEntity implements Serializable {
             joinColumns = @JoinColumn(name = "pes_id"),
             inverseJoinColumns = @JoinColumn(name = "end_id")
     )
-    private Set<EnderecoEntity> enderecos = new HashSet<>();
+    private List<EnderecoEntity> enderecos = new ArrayList<>();
 
 }
