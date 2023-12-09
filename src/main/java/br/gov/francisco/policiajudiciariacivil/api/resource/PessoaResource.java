@@ -1,7 +1,7 @@
 package br.gov.francisco.policiajudiciariacivil.api.resource;
 
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
-import br.gov.francisco.policiajudiciariacivil.domain.service.impl.PessoaServiceImpl;
+import br.gov.francisco.policiajudiciariacivil.domain.service.PessoaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PessoaResource {
 
-    private final PessoaServiceImpl pessoaServiceImpl;
+    private final PessoaService pessoaService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PessoaResponseList> findAll() {
-        PessoaResponseList pessoas = pessoaServiceImpl.findAll();
+        PessoaResponseList pessoas = pessoaService.findAll();
         return ResponseEntity.ok().body(pessoas);
     }
 
