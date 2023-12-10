@@ -4,6 +4,7 @@ import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.service.PessoaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class PessoaResource {
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<PessoaResponse> save(@RequestBody PessoaRequest pessoaRequest) {
+    public ResponseEntity<PessoaResponse> save(@RequestBody @Valid PessoaRequest pessoaRequest) {
         PessoaResponse pessoa = pessoaService.save(pessoaRequest);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
