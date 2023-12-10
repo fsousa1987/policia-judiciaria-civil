@@ -1,4 +1,4 @@
-package br.gov.francisco.policiajudiciariacivil.api.dto;
+package br.gov.francisco.policiajudiciariacivil.api.dto.pessoa;
 
 import br.gov.francisco.policiajudiciariacivil.api.response.endereco.EnderecoResponse;
 import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;

@@ -1,12 +1,10 @@
 package br.gov.francisco.policiajudiciariacivil.api.request;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.EnderecoRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
 @Builder
 @Getter

@@ -1,4 +1,4 @@
-package br.gov.francisco.policiajudiciariacivil.api.dto;
+package br.gov.francisco.policiajudiciariacivil.api.dto.endereco;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package br.gov.francisco.policiajudiciariacivil.api.response.endereco;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.EnderecoResponseDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

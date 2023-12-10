@@ -1,6 +1,6 @@
 package br.gov.francisco.policiajudiciariacivil.api.request;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.PessoaRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaRequestDto;
 import lombok.*;
 
 import java.io.Serial;

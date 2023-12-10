@@ -1,8 +1,8 @@
 package br.gov.francisco.policiajudiciariacivil.domain.service.impl;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.EnderecoRequestDto;
-import br.gov.francisco.policiajudiciariacivil.api.dto.PessoaRequestDto;
-import br.gov.francisco.policiajudiciariacivil.api.dto.PessoaResponseDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaResponseDto;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;

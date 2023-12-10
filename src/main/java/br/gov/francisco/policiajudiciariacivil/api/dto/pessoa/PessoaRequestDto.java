@@ -1,5 +1,6 @@
-package br.gov.francisco.policiajudiciariacivil.api.dto;
+package br.gov.francisco.policiajudiciariacivil.api.dto.pessoa;
 
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
 import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
