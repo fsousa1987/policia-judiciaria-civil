@@ -9,4 +9,6 @@ public interface PessoaService {
     PessoaResponseList findAll();
 
     PessoaResponse save(PessoaRequest pessoaRequest);
+
+    PessoaResponse findById(Integer id);
 }

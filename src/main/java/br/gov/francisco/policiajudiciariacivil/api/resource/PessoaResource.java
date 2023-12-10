@@ -38,4 +38,10 @@ public class PessoaResource {
         return ResponseEntity.created(uri).body(pessoa);
     }
 
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<PessoaResponse> findById(@PathVariable Integer id) {
+        PessoaResponse pessoa = pessoaService.findById(id);
+        return ResponseEntity.ok().body(pessoa);
+    }
+
 }

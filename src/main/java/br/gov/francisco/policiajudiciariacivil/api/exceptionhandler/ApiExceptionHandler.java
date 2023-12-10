@@ -1,10 +1,12 @@
 package br.gov.francisco.policiajudiciariacivil.api.exceptionhandler;
 
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.enums.ProblemType;
+import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -40,6 +43,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var problemType = ProblemType.DADOS_INVALIDOS;
         var detail = "O campo data de nascimento está inválido";
+        var problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(PessoaNaoEncontradaException.class)
+    public ResponseEntity<?> handlePessoaNaoEncontradaException(PessoaNaoEncontradaException ex, WebRequest request) {
+
+        var status = HttpStatus.NOT_FOUND;
+        var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+        var detail = ex.getMessage();
+
         var problem = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);

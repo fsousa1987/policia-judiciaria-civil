@@ -3,6 +3,7 @@ package br.gov.francisco.policiajudiciariacivil.domain.service.impl;
 import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaResponseDto;
+import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
@@ -60,6 +61,23 @@ public class PessoaServiceImpl implements PessoaService {
         pessoaEntity = pessoaRepository.save(pessoaEntity);
 
         return pessoaMapper.map(pessoaEntity, PessoaResponse.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PessoaResponse findById(Integer id) {
+        return PessoaResponse
+                .builder()
+                .pessoa(pessoaRepository
+                        .findById(id)
+                        .map(pessoaEntity -> pessoaMapper
+                                .map(pessoaEntity, PessoaResponseDto.class)
+                        )
+                        .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada para o id "
+                                .concat(id.toString()))
+                        )
+                )
+                .build();
     }
 
 }
