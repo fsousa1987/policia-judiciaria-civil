@@ -1,6 +1,7 @@
 package br.gov.francisco.policiajudiciariacivil.api.dto.pessoa;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoSaveRequestDto;
+import br.gov.francisco.policiajudiciariacivil.core.validation.EnumValidator;
 import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PessoaRequestDto implements Serializable {
+public class PessoaSaveRequestDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 4990978000541130061L;
@@ -28,9 +29,11 @@ public class PessoaRequestDto implements Serializable {
     @NotBlank(message = "o campo nome é obrigatório")
     private String nome;
 
+    @NotNull(message = "o campo data de nascimento é obrigatório")
     private LocalDate dataNascimento;
 
-    private Sexo sexo;
+    @EnumValidator(enumClassName = Sexo.class)
+    private String sexo;
 
     @NotBlank(message = "o campo nome da mãe é obrigatório")
     private String nomeMae;
@@ -41,6 +44,6 @@ public class PessoaRequestDto implements Serializable {
     @NotNull(message = "A lista de endereços não pode ser nula")
     @NotEmpty(message = "A lista de endereços não pode estar vazia")
     @Valid
-    private Set<EnderecoRequestDto> enderecos;
+    private Set<EnderecoSaveRequestDto> enderecos;
 
 }

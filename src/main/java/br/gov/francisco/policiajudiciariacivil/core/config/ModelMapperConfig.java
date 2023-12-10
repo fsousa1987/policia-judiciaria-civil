@@ -1,4 +1,4 @@
-package br.gov.francisco.policiajudiciariacivil.core;
+package br.gov.francisco.policiajudiciariacivil.core.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

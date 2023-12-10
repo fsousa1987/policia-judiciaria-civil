@@ -1,10 +1,11 @@
 package br.gov.francisco.policiajudiciariacivil.domain.service.impl;
 
-import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoRequestDto;
-import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaRequestDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoSaveRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaResponseDto;
+import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaSaveRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
-import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
+import br.gov.francisco.policiajudiciariacivil.api.request.PessoaSaveRequest;
+import br.gov.francisco.policiajudiciariacivil.api.request.PessoaUpdateRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.entity.EnderecoEntity;
@@ -24,9 +25,9 @@ import java.util.List;
 public class PessoaServiceImpl implements PessoaService {
 
     private final PessoaRepository pessoaRepository;
+    private final EnderecoRepository enderecoRepository;
     private final ModelMapper pessoaMapper;
     private final ModelMapper enderecoMapper;
-    private final EnderecoRepository enderecoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -45,9 +46,9 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     @Transactional
-    public PessoaResponse save(PessoaRequest pessoaRequest) {
-        List<EnderecoRequestDto> enderecosDto = pessoaRequest.getPessoa().getEnderecos().stream().toList();
-        PessoaRequestDto pessoa = pessoaRequest.getPessoa();
+    public PessoaResponse save(PessoaSaveRequest pessoaSaveRequest) {
+        List<EnderecoSaveRequestDto> enderecosDto = pessoaSaveRequest.getPessoa().getEnderecos().stream().toList();
+        PessoaSaveRequestDto pessoa = pessoaSaveRequest.getPessoa();
         List<EnderecoEntity> enderecosEntity = enderecosDto
                 .stream()
                 .map(enderecoDto -> enderecoMapper.map(enderecoDto, EnderecoEntity.class))
@@ -78,6 +79,12 @@ public class PessoaServiceImpl implements PessoaService {
                         )
                 )
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public PessoaResponse update(Integer id, PessoaUpdateRequest pessoaUpdateRequest) {
+        return null;
     }
 
 }

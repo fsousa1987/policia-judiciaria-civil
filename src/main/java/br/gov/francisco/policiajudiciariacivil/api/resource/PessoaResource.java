@@ -1,6 +1,7 @@
 package br.gov.francisco.policiajudiciariacivil.api.resource;
 
-import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
+import br.gov.francisco.policiajudiciariacivil.api.request.PessoaSaveRequest;
+import br.gov.francisco.policiajudiciariacivil.api.request.PessoaUpdateRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.service.PessoaService;
@@ -28,8 +29,8 @@ public class PessoaResource {
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<PessoaResponse> save(@RequestBody @Valid PessoaRequest pessoaRequest) {
-        PessoaResponse pessoa = pessoaService.save(pessoaRequest);
+    public ResponseEntity<PessoaResponse> save(@RequestBody @Valid PessoaSaveRequest pessoaSaveRequest) {
+        PessoaResponse pessoa = pessoaService.save(pessoaSaveRequest);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -41,6 +42,13 @@ public class PessoaResource {
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PessoaResponse> findById(@PathVariable Integer id) {
         PessoaResponse pessoa = pessoaService.findById(id);
+        return ResponseEntity.ok().body(pessoa);
+    }
+
+    @PutMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<PessoaResponse> update(@PathVariable Integer id,
+                                                 @RequestBody @Valid PessoaUpdateRequest pessoaUpdateRequest) {
+        PessoaResponse pessoa = pessoaService.update(id, pessoaUpdateRequest);
         return ResponseEntity.ok().body(pessoa);
     }
 
