@@ -137,8 +137,13 @@ public class PessoaServiceImpl implements PessoaService {
                 .build();
     }
 
-    private boolean verificarIgualdadeEntreEnderecosDaBaseEnderecosRequest(List<EnderecoEntity> enderecosEncontrados, List<EnderecoUpdateRequestDto> enderecosUpdateRequest) {
-        List<EnderecoEntity> enderecoRequestList = enderecosUpdateRequest.stream().map(enderecoRequest -> enderecoMapper.map(enderecoRequest, EnderecoEntity.class)).toList();
+    private boolean verificarIgualdadeEntreEnderecosDaBaseEnderecosRequest(
+            List<EnderecoEntity> enderecosEncontrados, List<EnderecoUpdateRequestDto> enderecosUpdateRequest
+    ) {
+        List<EnderecoEntity> enderecoRequestList = enderecosUpdateRequest
+                .stream()
+                .map(enderecoRequest -> enderecoMapper.map(enderecoRequest, EnderecoEntity.class))
+                .toList();
 
         return enderecosEncontrados
                 .size() == enderecoRequestList.size() && IntStream.range(0, enderecosEncontrados.size())
@@ -152,12 +157,13 @@ public class PessoaServiceImpl implements PessoaService {
                         .stream()
                         .filter(enderecoEntity -> Objects.equals(enderecoRequest.getId(), enderecoEntity.getId()))
                         .findFirst()
-                        .orElseThrow(() -> new EnderecoNaoEncontradoException("Não foi possível atualizar os endereços. " +
-                                "Verifique se os IDs estão corretos")));
+                        .orElseThrow(() ->
+                                new EnderecoNaoEncontradoException("Não foi possível atualizar os endereços. " +
+                                        "Verifique se os IDs estão corretos")));
     }
 
-    private void verificarSeAoAtualizarNaoOcorreraEnderecoDuplicado(List<EnderecoUpdateRequestDto> enderecosUpdateRequest,
-                                                                    List<EnderecoEntity> enderecosEntity) {
+    private void verificarSeAoAtualizarNaoOcorreraEnderecoDuplicado(
+            List<EnderecoUpdateRequestDto> enderecosUpdateRequest, List<EnderecoEntity> enderecosEntity) {
 
         Set<EnderecoEntity> listaComparativa = new HashSet<>(enderecosEntity);
 
