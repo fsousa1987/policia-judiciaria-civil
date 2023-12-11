@@ -21,8 +21,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -88,11 +92,11 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     @Transactional
     public PessoaResponse update(Integer id, PessoaUpdateRequest pessoaUpdateRequest) {
-        PessoaEntity pessoaEncontrada = pessoaRepository.findById(id)
+        PessoaEntity pessoaParaAtualizar = pessoaRepository.findById(id)
                 .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada para o id "
                         .concat(id.toString())));
 
-        List<EnderecoEntity> enderecosEncontrados = pessoaEncontrada.getEnderecos();
+        List<EnderecoEntity> enderecosParaAtualizar = pessoaParaAtualizar.getEnderecos();
 
         List<EnderecoUpdateRequestDto> enderecosUpdateRequest = pessoaUpdateRequest
                 .getPessoa()
@@ -100,27 +104,49 @@ public class PessoaServiceImpl implements PessoaService {
                 .stream()
                 .toList();
 
-        verificarEnderecoExiste(enderecosUpdateRequest, enderecosEncontrados);
-        verificarEnderecoDuplicado(enderecosUpdateRequest, enderecosEncontrados);
+        boolean saoIguais = verificarIgualdadeEntreEnderecosDaBaseEnderecosRequest(enderecosParaAtualizar,
+                enderecosUpdateRequest);
+
+        if (saoIguais) {
+            pessoaMapper.map(pessoaUpdateRequest.getPessoa(), pessoaParaAtualizar);
+            PessoaEntity pessoaAtualizada = pessoaRepository.saveAndFlush(pessoaParaAtualizar);
+            return construirResponsePessoa(pessoaAtualizada);
+        }
+
+        verificarSeEnderecosRequestExistem(enderecosUpdateRequest, enderecosParaAtualizar);
+        verificarSeAoAtualizarNaoOcorreraEnderecoDuplicado(enderecosUpdateRequest, enderecosParaAtualizar);
 
         enderecosUpdateRequest.forEach(enderecoUpdateRequest ->
-                enderecosEncontrados.stream()
-                        .filter(enderecoEntity -> Objects.equals(enderecoUpdateRequest.getId(), enderecoEntity.getId()))
+                enderecosParaAtualizar.stream()
+                        .filter(enderecoEncontradoNaBaseDeDados -> Objects
+                                .equals(enderecoUpdateRequest.getId(), enderecoEncontradoNaBaseDeDados.getId()))
                         .findFirst()
                         .ifPresent(enderecoEntity -> enderecoMapper.map(enderecoUpdateRequest, enderecoEntity)));
 
-        pessoaMapper.map(pessoaUpdateRequest, pessoaEncontrada);
-        List<EnderecoEntity> enderecosAtualizados = enderecoRepository.saveAll(enderecosEncontrados);
-        pessoaEncontrada.setEnderecos(enderecosAtualizados);
-        PessoaEntity save = pessoaRepository.save(pessoaEncontrada);
+        pessoaMapper.map(pessoaUpdateRequest, pessoaParaAtualizar);
+        List<EnderecoEntity> enderecosAtualizados = enderecoRepository.saveAll(enderecosParaAtualizar);
+        pessoaParaAtualizar.setEnderecos(enderecosAtualizados);
+        PessoaEntity save = pessoaRepository.save(pessoaParaAtualizar);
 
+        return construirResponsePessoa(save);
+    }
+
+    private PessoaResponse construirResponsePessoa(PessoaEntity save) {
         return PessoaResponse.builder()
                 .pessoa(pessoaMapper.map(save, PessoaResponseDto.class))
                 .build();
     }
 
-    private void verificarEnderecoExiste(List<EnderecoUpdateRequestDto> enderecosUpdateRequest,
-                                         List<EnderecoEntity> enderecosEntity) {
+    private boolean verificarIgualdadeEntreEnderecosDaBaseEnderecosRequest(List<EnderecoEntity> enderecosEncontrados, List<EnderecoUpdateRequestDto> enderecosUpdateRequest) {
+        List<EnderecoEntity> enderecoRequestList = enderecosUpdateRequest.stream().map(enderecoRequest -> enderecoMapper.map(enderecoRequest, EnderecoEntity.class)).toList();
+
+        return enderecosEncontrados
+                .size() == enderecoRequestList.size() && IntStream.range(0, enderecosEncontrados.size())
+                .allMatch(i -> enderecosEncontrados.get(i).equals(enderecoRequestList.get(i)));
+    }
+
+    private void verificarSeEnderecosRequestExistem(List<EnderecoUpdateRequestDto> enderecosUpdateRequest,
+                                                    List<EnderecoEntity> enderecosEntity) {
         enderecosUpdateRequest
                 .forEach(enderecoRequest -> enderecosEntity
                         .stream()
@@ -130,8 +156,8 @@ public class PessoaServiceImpl implements PessoaService {
                                 "Verifique se os IDs estão corretos")));
     }
 
-    private void verificarEnderecoDuplicado(List<EnderecoUpdateRequestDto> enderecosUpdateRequest,
-                                            List<EnderecoEntity> enderecosEntity) {
+    private void verificarSeAoAtualizarNaoOcorreraEnderecoDuplicado(List<EnderecoUpdateRequestDto> enderecosUpdateRequest,
+                                                                    List<EnderecoEntity> enderecosEntity) {
 
         Set<EnderecoEntity> listaComparativa = new HashSet<>(enderecosEntity);
 
@@ -147,7 +173,8 @@ public class PessoaServiceImpl implements PessoaService {
         }
 
         if (!listaComparativa.addAll(collect)) {
-            throw new FalhaDeDuplicidadeAoAtualizarException("Falha ao atualizar endereço. Pode ser gerada duplicidade");
+            throw new FalhaDeDuplicidadeAoAtualizarException("Falha ao atualizar o endereço. " +
+                    "Já existe um mesmo endereço já cadastrado na base de dados.");
         }
     }
 
