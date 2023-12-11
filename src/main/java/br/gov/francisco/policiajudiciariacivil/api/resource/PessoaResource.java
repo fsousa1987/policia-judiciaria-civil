@@ -1,6 +1,6 @@
 package br.gov.francisco.policiajudiciariacivil.api.resource;
 
-import br.gov.francisco.policiajudiciariacivil.api.request.PessoaSaveRequest;
+import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaUpdateRequest;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
@@ -29,8 +29,8 @@ public class PessoaResource {
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<PessoaResponse> save(@RequestBody @Valid PessoaSaveRequest pessoaSaveRequest) {
-        PessoaResponse pessoa = pessoaService.save(pessoaSaveRequest);
+    public ResponseEntity<PessoaResponse> save(@RequestBody @Valid PessoaRequest pessoaRequest) {
+        PessoaResponse pessoa = pessoaService.save(pessoaRequest);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

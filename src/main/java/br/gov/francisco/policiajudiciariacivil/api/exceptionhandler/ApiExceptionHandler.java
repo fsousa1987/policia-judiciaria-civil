@@ -1,6 +1,7 @@
 package br.gov.francisco.policiajudiciariacivil.api.exceptionhandler;
 
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.enums.ProblemType;
+import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.EnderecoNaoEncontradoException;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -50,6 +51,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PessoaNaoEncontradaException.class)
     public ResponseEntity<?> handlePessoaNaoEncontradaException(PessoaNaoEncontradaException ex, WebRequest request) {
+
+        var status = HttpStatus.NOT_FOUND;
+        var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+        var detail = ex.getMessage();
+
+        var problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EnderecoNaoEncontradoException.class)
+    public ResponseEntity<?> handleEnderecoNaoEncontradoException(EnderecoNaoEncontradoException ex, WebRequest request) {
 
         var status = HttpStatus.NOT_FOUND;
         var problemType = ProblemType.RECURSO_NAO_ENCONTRADO;

@@ -21,7 +21,6 @@ public class EnderecoEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @EqualsAndHashCode.Include
     @Id
     @SequenceGenerator(
             name = "endereco_seq",
@@ -36,15 +35,19 @@ public class EnderecoEntity implements Serializable {
     private Integer id;
 
     @Column(name = "end_tipo_logradouro", nullable = false, length = 50)
+    @EqualsAndHashCode.Include
     private String tipoLogradouro;
 
     @Column(name = "end_logradouro", nullable = false, length = 200)
+    @EqualsAndHashCode.Include
     private String logradouro;
 
     @Column(name = "end_numero", nullable = false)
+    @EqualsAndHashCode.Include
     private Integer numero;
 
     @Column(name = "end_bairro", nullable = false, length = 100)
+    @EqualsAndHashCode.Include
     private String bairro;
 
     @ManyToMany(mappedBy = "enderecos")

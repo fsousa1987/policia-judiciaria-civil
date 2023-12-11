@@ -21,7 +21,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PessoaSaveRequestDto implements Serializable {
+public class PessoaRequestDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 4990978000541130061L;
