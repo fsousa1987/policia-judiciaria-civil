@@ -2,15 +2,13 @@ package br.gov.francisco.policiajudiciariacivil.api.dto.endereco;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EnderecoUpdateRequestDto implements Serializable {
 

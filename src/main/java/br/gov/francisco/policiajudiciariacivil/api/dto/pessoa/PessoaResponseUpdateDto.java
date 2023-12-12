@@ -1,19 +1,13 @@
 package br.gov.francisco.policiajudiciariacivil.api.dto.pessoa;
 
 import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class PessoaResponseUpdateDto implements Serializable {
 
     @Serial

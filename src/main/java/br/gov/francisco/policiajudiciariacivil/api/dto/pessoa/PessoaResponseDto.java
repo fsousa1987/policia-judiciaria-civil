@@ -2,20 +2,14 @@ package br.gov.francisco.policiajudiciariacivil.api.dto.pessoa;
 
 import br.gov.francisco.policiajudiciariacivil.api.response.endereco.EnderecoResponse;
 import br.gov.francisco.policiajudiciariacivil.domain.enums.Sexo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class PessoaResponseDto implements Serializable {
 
     @Serial

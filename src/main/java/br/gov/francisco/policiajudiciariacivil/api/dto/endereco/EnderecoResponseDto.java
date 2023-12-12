@@ -1,15 +1,11 @@
 package br.gov.francisco.policiajudiciariacivil.api.dto.endereco;
 
-import lombok.*;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Data
 public class EnderecoResponseDto implements Serializable {
 
     @Serial
