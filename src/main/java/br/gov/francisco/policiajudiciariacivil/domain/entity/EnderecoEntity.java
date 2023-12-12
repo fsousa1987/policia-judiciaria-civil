@@ -53,4 +53,12 @@ public class EnderecoEntity implements Serializable {
     @ManyToMany(mappedBy = "enderecos")
     private List<PessoaEntity> pessoas = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "unidade_endereco",
+            joinColumns = @JoinColumn(name = "unid_id"),
+            inverseJoinColumns = @JoinColumn(name = "end_id")
+    )
+    private List<UnidadeEntity> unidades = new ArrayList<>();
+
 }
