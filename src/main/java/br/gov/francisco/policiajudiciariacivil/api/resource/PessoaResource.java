@@ -1,7 +1,9 @@
 package br.gov.francisco.policiajudiciariacivil.api.resource;
 
+import br.gov.francisco.policiajudiciariacivil.api.request.EnderecoSaveRequestList;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaUpdateRequest;
+import br.gov.francisco.policiajudiciariacivil.api.response.endereco.EnderecoResponseList;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.service.PessoaService;
@@ -52,6 +54,16 @@ public record PessoaResource(PessoaService pessoaService) {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         pessoaService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/{id}/adicionar/enderecos", produces = APPLICATION_JSON_VALUE,
+            consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<EnderecoResponseList> adicionarEnderecos(
+            @PathVariable Integer id,
+            @RequestBody @Valid EnderecoSaveRequestList enderecoSaveRequestList
+    ) {
+        EnderecoResponseList enderecos = pessoaService.adicionarEnderecos(id, enderecoSaveRequestList);
+        return ResponseEntity.ok().body(enderecos);
     }
 
 }

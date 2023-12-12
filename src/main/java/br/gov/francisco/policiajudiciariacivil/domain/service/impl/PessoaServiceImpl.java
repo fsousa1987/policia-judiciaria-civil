@@ -1,14 +1,17 @@
 package br.gov.francisco.policiajudiciariacivil.domain.service.impl;
 
+import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoResponseDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoSaveRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.endereco.EnderecoUpdateRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaRequestDto;
 import br.gov.francisco.policiajudiciariacivil.api.dto.pessoa.PessoaResponseDto;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.EnderecoNaoEncontradoException;
-import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.FalhaDeDuplicidadeAoAtualizarException;
+import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
+import br.gov.francisco.policiajudiciariacivil.api.request.EnderecoSaveRequestList;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaRequest;
 import br.gov.francisco.policiajudiciariacivil.api.request.PessoaUpdateRequest;
+import br.gov.francisco.policiajudiciariacivil.api.response.endereco.EnderecoResponseList;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponse;
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.entity.EnderecoEntity;
@@ -142,6 +145,46 @@ public class PessoaServiceImpl implements PessoaService {
         pessoaRepository.delete(pessoaParaDeletar);
     }
 
+    @Override
+    @Transactional
+    public EnderecoResponseList adicionarEnderecos(Integer id, EnderecoSaveRequestList enderecoSaveRequestList) {
+        PessoaEntity pessoaParaAdicionarEndereco = pessoaRepository
+                .findById(id)
+                .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada para o id "
+                        .concat(id.toString())));
+
+        Set<EnderecoEntity> enderecosDaBaseDeDados = new HashSet<>(pessoaParaAdicionarEndereco.getEnderecos());
+
+        Set<EnderecoEntity> enderecosRequest = enderecoSaveRequestList
+                .getEnderecos()
+                .stream()
+                .map(enderecoRequest -> enderecoMapper.map(enderecoRequest, EnderecoEntity.class))
+                .collect(Collectors.toSet());
+
+        Set<EnderecoEntity> auxiliar = new HashSet<>(enderecosDaBaseDeDados);
+
+        enderecosDaBaseDeDados.addAll(enderecosRequest);
+
+        List<EnderecoEntity> enderecosSalvos = enderecoRepository.saveAll(enderecosDaBaseDeDados);
+        pessoaParaAdicionarEndereco.setEnderecos(enderecosSalvos);
+        pessoaRepository.save(pessoaParaAdicionarEndereco);
+
+        List<EnderecoResponseDto> enderecosResponseDtos = enderecosSalvos
+                .stream()
+                .filter(enderecoSalvo -> !auxiliar.contains(enderecoSalvo))
+                .map(enderecoSalvo -> enderecoMapper.map(enderecoSalvo, EnderecoResponseDto.class))
+                .toList();
+
+        if (enderecosResponseDtos.isEmpty()) {
+            throw new FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException("Os endereços fornecidos já estão na base de dados");
+        }
+
+        return EnderecoResponseList
+                .builder()
+                .enderecos(enderecosResponseDtos)
+                .build();
+    }
+
     private PessoaResponse construirResponsePessoa(PessoaEntity save) {
         return PessoaResponse.builder()
                 .pessoa(pessoaMapper.map(save, PessoaResponseDto.class))
@@ -190,7 +233,7 @@ public class PessoaServiceImpl implements PessoaService {
         }
 
         if (!listaComparativa.addAll(collect)) {
-            throw new FalhaDeDuplicidadeAoAtualizarException("Falha ao atualizar o endereço. " +
+            throw new FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException("Falha ao atualizar o endereço. " +
                     "Já existe um mesmo endereço já cadastrado na base de dados.");
         }
     }

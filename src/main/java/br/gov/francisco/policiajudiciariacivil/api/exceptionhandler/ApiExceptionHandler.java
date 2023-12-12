@@ -2,7 +2,7 @@ package br.gov.francisco.policiajudiciariacivil.api.exceptionhandler;
 
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.enums.ProblemType;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.EnderecoNaoEncontradoException;
-import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.FalhaDeDuplicidadeAoAtualizarException;
+import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException;
 import br.gov.francisco.policiajudiciariacivil.api.exceptionhandler.exceptions.PessoaNaoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -74,8 +74,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    @ExceptionHandler(FalhaDeDuplicidadeAoAtualizarException.class)
-    public ResponseEntity<?> handleFalhaDeDuplicidadeAoAtualizarException(FalhaDeDuplicidadeAoAtualizarException ex,
+    @ExceptionHandler(FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException.class)
+    public ResponseEntity<?> handleFalhaDeDuplicidadeAoAtualizarException(FalhaDeDuplicidadeAoAtualizarOuSalvarNovoEnderecoException ex,
                                                                           WebRequest request) {
 
         var status = HttpStatus.CONFLICT;
