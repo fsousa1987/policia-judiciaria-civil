@@ -14,4 +14,6 @@ public interface PessoaService {
     PessoaResponse findById(Integer id);
 
     PessoaResponse update(Integer id, PessoaUpdateRequest pessoaUpdateRequest);
+
+    void delete(Integer id);
 }

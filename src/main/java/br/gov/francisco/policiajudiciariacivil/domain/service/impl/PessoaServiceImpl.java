@@ -131,6 +131,17 @@ public class PessoaServiceImpl implements PessoaService {
         return construirResponsePessoa(save);
     }
 
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        PessoaEntity pessoaParaDeletar = pessoaRepository
+                .findById(id)
+                .orElseThrow(() -> new PessoaNaoEncontradaException("Pessoa não encontrada para o id "
+                        .concat(id.toString())));
+
+        pessoaRepository.delete(pessoaParaDeletar);
+    }
+
     private PessoaResponse construirResponsePessoa(PessoaEntity save) {
         return PessoaResponse.builder()
                 .pessoa(pessoaMapper.map(save, PessoaResponseDto.class))

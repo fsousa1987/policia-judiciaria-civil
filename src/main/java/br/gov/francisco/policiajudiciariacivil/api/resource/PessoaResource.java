@@ -48,4 +48,10 @@ public record PessoaResource(PessoaService pessoaService) {
         return ResponseEntity.ok().body(pessoa);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        pessoaService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

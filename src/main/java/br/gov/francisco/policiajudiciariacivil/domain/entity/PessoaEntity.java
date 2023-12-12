@@ -56,7 +56,7 @@ public class PessoaEntity implements Serializable {
     @Column(name = "pes_pai", nullable = false, length = 200)
     private String nomePai;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "pessoa_endereco",
             joinColumns = @JoinColumn(name = "pes_id"),
