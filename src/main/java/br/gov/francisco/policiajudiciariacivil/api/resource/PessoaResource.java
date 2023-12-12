@@ -6,7 +6,6 @@ import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaRespons
 import br.gov.francisco.policiajudiciariacivil.api.response.pessoa.PessoaResponseList;
 import br.gov.francisco.policiajudiciariacivil.domain.service.PessoaService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,10 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/v1/pessoas")
-@RequiredArgsConstructor
-public class PessoaResource {
-
-    private final PessoaService pessoaService;
+public record PessoaResource(PessoaService pessoaService) {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PessoaResponseList> findAll() {
