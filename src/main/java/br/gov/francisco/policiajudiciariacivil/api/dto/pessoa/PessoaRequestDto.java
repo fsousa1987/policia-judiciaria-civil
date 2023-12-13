@@ -35,8 +35,8 @@ public class PessoaRequestDto implements Serializable {
     @NotBlank(message = "o campo nome do pai é obrigatório")
     private String nomePai;
 
-    @NotNull(message = "A lista de endereços não pode ser nula")
-    @NotEmpty(message = "A lista de endereços não pode estar vazia")
+    @NotNull(message = "a lista de endereços não pode ser nula")
+    @NotEmpty(message = "a lista de endereços não pode estar vazia")
     @Valid
     private Set<EnderecoSaveRequestDto> enderecos;
 

@@ -1,5 +1,6 @@
 package br.gov.francisco.policiajudiciariacivil.api.dto.endereco;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -30,5 +31,9 @@ public class EnderecoSaveRequestDto implements Serializable {
     @NotBlank(message = "o campo bairro é obrigatório")
     @EqualsAndHashCode.Include
     private String bairro;
+
+    @NotNull(message = "o uf não pode ser nulo")
+    @Valid
+    private UnidadeRequestDto uf;
 
 }
